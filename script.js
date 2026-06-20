@@ -335,3 +335,50 @@ Get in touch: mdsalman181931@gmail.com
 
 Explore my projects and skills!
 `, 'font-size: 20px; color: #00d4ff; font-weight: bold;', 'font-size: 14px; color: #7c3aed;');
+
+
+
+
+/// from
+// Contact Form - Formspree
+const contactForm = document.getElementById('contactForm');
+
+if (contactForm) {
+    contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const btn = contactForm.querySelector('.submit-btn');
+        btn.textContent = 'Sending...';
+        btn.disabled = true;
+
+        try {
+            const response = await fetch(contactForm.action, {
+                method: 'POST',
+                body: new FormData(contactForm),
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (response.ok) {
+                btn.textContent = '✅ Sent!';
+                btn.style.background = '#22c55e';
+                contactForm.reset();
+                setTimeout(() => {
+                    btn.textContent = 'Send Message';
+                    btn.style.background = '';
+                    btn.disabled = false;
+                }, 3000);
+            } else {
+                btn.textContent = '❌ Failed. Try again.';
+                btn.style.background = '#ef4444';
+                btn.disabled = false;
+                setTimeout(() => {
+                    btn.textContent = 'Send Message';
+                    btn.style.background = '';
+                }, 3000);
+            }
+        } catch (err) {
+            btn.textContent = '❌ Network Error';
+            btn.disabled = false;
+        }
+    });
+}
